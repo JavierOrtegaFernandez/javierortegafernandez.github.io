@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<!-- Práctica 01 - HTML y CSS.  Javier Ortega Fernández -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+  <head>
+	<meta charset="utf-8" />
+	<title>Javi's Programs</title>
+	<!-- Inicio del código para resaltar la sintaxis de los códigos fuente con la librería SyntaxHighlighter  -->
+	<link type="text/css" rel="stylesheet" href="librerias/syntaxhighlighter/styles/shCoreDefault.css"/>
+	<script type="text/javascript" src="librerias/syntaxhighlighter/scripts/shCore.js"></script>
+	<script type="text/javascript" src="librerias/syntaxhighlighter/scripts/shBrushCpp.js"></script>
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+	<script type="text/javascript">SyntaxHighlighter.config.strings.expandSource = "expandir código";</script>
+	<!-- Fin del código -->
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<link rel="icon" type="image/x-icon" href="favicon.ico" />
+  </head>
+  <body>
+	<header>
+	  <h1>Javi's Programs</h1>
+	  <span class="titulo">Programación de andar por casa</span>
+	</header>
+	<nav>
+	  <ul>
+	    <li><a href="index.html">Inicio</a></li>
+		<li><a href="pages/visualbasic.html">Visual Basic</a></li>
+		<li><a href="pages/cplus.html">C/C++</a></li>
+		<li><a href="pages/javascript.html">JavaScript</a></li>
+		<li><a href="pages/php.html">PHP</a></li>
+		<li><a href="pages/contacto.html">Contacto</a></li>
+		<li><a href="pages/sobre.html">Sobre nosotros</a></li>
+	  </ul>
+	</nav>
+	<section>
+		<h2>¡Bienvenido a mi página web sobre programación!</h2>
+		<p>En esta página podrá encontrar algunos ejemplos de códigos fuentes de diversos lenguajes de programación, preparados para ser compilados <i>(en el caso de lenguajes que generen ejecutables)</i> con un IDE <i>(Entorno de Desarrollo Integrado)</i> desarrollado para tal lenguaje. El objetivo de esta página no es el aprendizaje o iniciación a la programación, sino más bien un acercamiento, para que aquellas personas que nunca se han atrevido pierdan el miedo a tanto código extraño 'sin sentido', que al fin y al cabo, sin apenas darnos cuenta es utilizado por todos cada día.</p>
+		
+		<p>El código aquí expuesto será por lo general corto y sencillo, ya que lo que se pretende es que se pierda el miedo, no provocar más xD. Además, los conocimientos de un servidor son limitados, puesto que que fueron adquiridos con la práctica y constancia con el paso de los años de manera autodidacta y como hobby.</p>
+		<p>Si nunca ha creado un programa y está harto de esa situación <i>(ha sonado a anuncio de detergente xD)</i>, ¡corre! descárgate el Dev-C++ o el Codeblocks y pega este código para crear tu primer programa.</p>
+		
+<pre class="brush: cpp;collapse: false;toolbar: false;">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	printf("¡Hola Mundo!\n");
+	return 0;
+}
+</pre>
+		
+		<p>Si has sido capaz de crear un nuevo proyecto de consola, has pegado el código y lo has compilado y ejecutado mediante una línea de comandos, ya puede decirse que ¡eres programador!, pero ojo, no hasta que comprendas realmente el significado de todas las partes del código. Una rápida y escueta explicación del mismo sería, <b>int main()</b> es la función principal del programa, <b>printf</b> sirve para mostrar texto por pantalla, <b>return</b> es la salida de retorno de la funcion main() <i>(int significa número entero)</i> y con la primera línea <b>#include &lt;stdio.h&gt;</b> le decimos al compilador que incluya el archivo stdio.h para poder usar la funcion interna printf. ¿Lo entendiste? entonces ahora sí, ¡ERES PROGRAMADOR! oficialmente :D.</p>
+		
+		<p>Los programas para compilar los códigos fuentes son livianos y las versiones portables pueden encontrarse fácilmente por la red, por lo que no es necesario instalar nada en la máquina. Principalmente, con estos tres sería más que suficiente para compilar cualquier código expuesto en la página: Codeblocks, Microsoft Visual C++ 6.0 y Visual Basic 6.0 <i>(cada uno tiene su versión portable)</i>. </p>
+		
+		<p><b>Codeblocks</b></p>
+		<img src="images/codeblocks.jpg" alt="Imagen de Codeblocks" />
+		
+		<p><b>Microsoft Visual C++ 6.0</b></p>
+		<img src="images/MSVisualC.jpg" alt="Imagen de Microsoft Visual C++ 6.0" />
+		
+		<p><b>Visual Basic 6.0</b></p>
+		<img src="images/VisualBasic.jpg" alt="Imagen de Visual Basic 6.0" />
+
+		<p>Si el tiempo me lo permite, ampliaré la funcionalidad de la página web y iré agregando nuevos ejemplos en las distintas secciones, también me gustaría crear una nueva sección de scripts en Bash y Batch, pero como acabo de mencionar, todo depende del tiempo del que disponga, que sinceramente, creo que será más bien escaso. De igual manera, animo a que indaguen en esta rama de la informática, que cuando se empieza a comprender un poco, es muy constructiva y fascinante.</p>
+		<p><b><i>Javi</i></b></p>
+		
+	</section>
+	
+	<aside>
+	
+		<div class="widgets">
+			<span class="texto_widget">Buscar entrada</span><br/>
+		</div>
+
+		<div id="formulario_buscar">
+		<form id="widget_buscar" action="javascript:alert('Funcionalidad no implementada.')" method="get" autocomplete="off">
+			<input name="buscar" type="text" value="" required="required" title="Buscar" /><br />
+			<input class="boton_enviar" type="submit" value="Buscar" />
+		</form>
+		</div>
+		
+		<div class="widgets">
+			<span class="texto_widget">Secciones</span><br/>
+			<ul>
+				<li><a href="pages/visualbasic.html">Visual Basic</a></li>
+				<li><a href="pages/cplus.html">C/C++</a></li>
+				<li><a href="pages/javascript.html">JavaScript</a></li>
+				<li><a href="pages/php.html">PHP</a></li>
+			</ul>
+		</div>		
+		
+		<div class="widgets">
+			<span class="texto_widget">Etiquetas</span><br/>
+			<ul>
+				<li><a href="pages/enconstruccion.html">variables</a></li>
+				<li><a href="pages/enconstruccion.html">funciones</a></li>
+				<li><a href="pages/enconstruccion.html">arrays</a></li>
+				<li><a href="pages/enconstruccion.html">prototipos</a></li>
+				<li><a href="pages/enconstruccion.html">operaciones</a></li>
+				<li><a href="pages/enconstruccion.html">punteros</a></li>
+				<li><a href="pages/enconstruccion.html">declaraciones</a></li>
+				<li><a href="pages/enconstruccion.html">matrices</a></li>
+			</ul>
+		</div>
+		
+		<div class="widgets">
+			<span class="texto_widget">Nube de etiquetas</span><br/>
+			<div id="nube">
+				<a href="pages/enconstruccion.html">Funciones</a>
+				<a href="pages/enconstruccion.html">Variables</a>
+				<a href="pages/enconstruccion.html">Matrices</a>
+				<a href="pages/enconstruccion.html">Operaciones</a>
+				<a href="pages/enconstruccion.html">Punteros</a>
+				<a href="pages/enconstruccion.html">Prototipos</a>
+				<a href="pages/enconstruccion.html">Declaraciones</a>
+				<a href="pages/enconstruccion.html">Arrays</a>
+			</div>
+		</div>
+		
+		<div class="widgets">
+			<span class="texto_widget">Feeds</span><br/>
+			<ul>
+				<li><a href="pages/enconstruccion.html">Subscribirse (RSS)</a></li>
+				<li><a href="pages/enconstruccion.html">Subscribirse (ATOM)</a></li>
+			</ul>			
+		</div>
+		
+	</aside>
+	<footer><p>Copyright &copy; Javier Ortega 2016</p></footer>
+	
+  </body>
+</html>
