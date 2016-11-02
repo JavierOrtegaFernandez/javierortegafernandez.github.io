@@ -1,0 +1,364 @@
+/*
+	Hoja de estilo escrita por Javier Ortega Fernández.
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Arial, sans-serif;
+	font-family: 'Lato', sans-serif;
+	font-size: 18px;
+	color: #3B3B3B;
+	background-image: url('../images/fondo.png');
+	background-repeat: repeat;
+}
+
+header {
+	font-size: 1.8em;
+	color: #eee;
+	background-color: #0087be;
+	text-shadow: 2px 2px 4px #0D3A55;
+	padding: 2% 4% 3% 4%;
+	cursor: default;
+	border-bottom: 1px solid #0074A1;
+	background-image: url('../images/cabecera.jpg');
+	background-repeat: no-repeat;
+}
+
+h1 {
+	margin: 0;
+	padding: 1%;
+	padding-bottom: 1%;
+	font-size: 2.1em;
+	padding-left: 2%;
+}
+
+h2 {
+	font-size: 2em;
+}
+
+h4 {
+	font-size: 1.1em;
+}
+
+section img {
+	display: block;
+	margin: 3em auto;
+	width: 85%;
+	max-width: 550px;
+	box-shadow: 1em 1em 1.5em #888;	
+}
+
+nav ul li a {
+	color: #CEF5FB;
+	text-decoration: none;
+}
+
+a {
+	color: #1E4B6B;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #0087be;
+	text-decoration: none;
+}
+
+li {
+	font-size: 1.4em;
+}
+
+nav {
+	width: 100%;
+	margin: 0 auto;
+	background-color: #143043;
+	box-shadow: 0 0.2em 0.2em #a0a0a0;
+}
+
+nav ul {
+	margin: 0;
+	background-color: #143043;
+}
+
+nav ul li {
+	display: inline-block;
+	padding: 0.8em;
+	background-color: #143043;
+	height: 1.2em;
+	font-size: 1.3em;
+}
+
+nav ul li a:hover {
+	color: #84FFFC;
+	text-decoration: none;
+	text-shadow: 0 0 0.3em #E6F9FF;
+}
+
+p {
+	font-size: 1.1em;
+}
+
+section {
+	/*font-family: 'Open Sans';*/
+	padding: 5%;
+	width: 58%;
+	float: left;
+}
+
+section p {
+	line-height: 1.6em;
+	text-align: justify;
+}
+
+article  {
+	/*font-family: 'Open Sans';*/
+	padding: 5%;
+	width: 58%;
+	float: left;
+}
+
+article  p {
+	line-height: 1.6em;
+	text-align: justify;
+}
+
+article img {
+	display: block;
+	margin: 3em auto;
+	width: 85%;
+	max-width: 550px;
+	box-shadow: 1em 1em 1.5em #888;	
+}
+
+aside {
+	width: 27%;
+	float: right;
+	padding-top: 1%;
+	padding-bottom: 3%;
+	margin: 3% 3% 3% 1%;
+	text-align: center;
+	border: 0px solid #fff;
+	cursor: default;
+}
+
+footer {
+	clear: both;
+	width: 98%;
+	padding: 1%;
+	padding-top: 4%;
+	padding-bottom: 4%;
+	text-align: center;
+	color: #fff;
+	background-color: #282a2b;
+	font-size: 0.8em;
+	cursor: default;
+	text-shadow: 0 0 0.1em #555;
+	border-top: 0.1em solid #888;
+}
+
+form {
+	margin-bottom: 5%;
+}
+
+form label {
+	font-size: 0.9em;
+	font-weight: bold;
+}
+
+form input, textarea {
+	margin: 0.7em 0 0.7em 0;
+	padding: 0.4em;
+	border: 1px solid #bbb;
+	border-radius: 4px;
+	box-shadow: 0 0 0.3em #ccc;
+	width: 85%;
+}
+
+.boton_enviar {
+	opacity: 1;
+	padding: 0.6em 1em 0.6em 1em;
+	box-shadow: 0 0 0.1em #eee;
+	width: 6em;
+}
+
+.boton_enviar:hover {
+	opacity: 0.7;
+	cursor: pointer;
+	width: 6em;
+}
+
+form#contacto input.boton_enviar {
+	width: 8em;
+	letter-spacing: 2px;	
+}
+
+.requerido {
+	color: #B94A48;
+	font-weight: bold;
+}
+
+#formulario_buscar {
+	margin: 1%;
+	margin-bottom: 4%;
+	padding: 4%;
+	border: 1px dotted #bbb;
+	text-align: center;
+	min-width: 80%;
+	max-width: 70%;
+}
+
+form#widget_buscar {
+	margin: 2%;
+	padding: 3%;
+	text-align: left;
+}
+
+form#widget_buscar input[type|=text] {
+	margin: 0;
+	padding: 4%;
+	border: 1px dotted #bbb;
+	box-shadow: 0 0 0 #fff;
+	border-radius: 0px;
+	margin-bottom: 0.4em;
+	width: 92%;
+	background-color: #fafafa;
+}
+
+form#widget_buscar input:focus[type|=text] {
+	background-color: #fff;
+}
+
+form#widget_buscar input[type|=submit] {
+	margin: 0;
+	margin-top: 0.2em;
+	box-shadow: 0 0 0 #fff;
+	border-radius: 0px;
+	color: #444;
+	border: 1px dotted #bbb;
+}
+
+.texto_widget {
+	font-size: 1.6em;
+	font-weight: 600;
+}
+
+.widgets {
+	margin: 0;
+	padding: 4% 0 4% 0;
+	text-align: left;
+}
+
+div.widgets ul {	
+    display: table;
+    padding: 0 1.5em;
+	font-size: 0.8em;
+}
+
+blockquote {
+	margin: 5%;
+	padding: 2% 4%;
+	width: 80%;
+	font-size: 0.8em;
+	color: #001542;
+	background-color: #E6EAF3;
+	border: 0.3em solid #959CAD;
+	text-shadow: 0 0 0.1em #B0C8FF;
+	border-radius: 1em;
+	word-break: break-all;
+	box-shadow: 0 0 0.3em #aaa;
+}
+
+blockquote.consola {
+	margin: 5% 10%;
+	padding: 1% 0 3% 0;
+	width: 80%;
+	font-family: Lucida Console, monospace;
+	font-size: 0.6em;
+	color: #eee;
+	background-color: #000;
+	border-top: 1.4em solid #5A87E7;
+	border-left: 0.3em ridge #888;
+	border-right: 0.3em ridge #888;
+	border-bottom: 0.3em ridge #888;
+	border-radius: 0;
+	word-break: break-all;
+}
+
+blockquote.consola p {
+	line-height: 0.8em;
+	font-family: Lucida Console, monospace;
+	text-shadow: 0 0 0 #000;
+	word-break: break-all;
+}
+
+blockquote p {
+	line-height: 1em;
+	word-break: break-all;
+}
+
+img#obrero {
+	width: 50%;
+	height: auto;
+	padding: 0 0 5% 0;
+	box-shadow: 0 0 0 #fff;
+}
+
+div#enobras {
+	margin: 0 auto;
+	padding: 10% 5% 5% 3%;
+	width: 90%;
+	color: #444;
+	font-family: Arial, sans serif;
+	font-size: 4em;
+	font-weight: bold;
+	text-align: center;
+}
+
+.titulo {
+	text-align: left;
+	font-size: 1em;
+	margin-left: 8%;
+	color: #0087be;
+	text-shadow: 0.05em 0.05em 0.1em #143043;
+}
+
+#nube {
+	display: inline-block;
+	margin: 7% 2% 2% 0;
+	padding: 3%;
+	width: 80%;
+	max-width: 13em;
+	line-height: 1.3em;
+	height: auto;
+	background-color: #eee;
+	border: 0.1em solid #ccc;
+	text-align: center;
+}
+
+#nube a {
+	color: #555;
+	font-size: 0.6em;
+	padding: 0.1em;
+	margin: 0.6em;
+	cursor: pointer;
+}
+
+#nube a:hover {
+	opacity: 0.5;
+}
+
+#nube a:visited {
+	color: #555;
+}
+
+footer .validar table{
+	width: 246px;
+}
+
+footer .validar td{
+	width: 92px;
+	margin: 0;
+	padding-right: 20%;
+}
