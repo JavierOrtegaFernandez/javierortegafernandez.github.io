@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<!-- Práctica 01 - HTML y CSS.  Javier Ortega Fernández -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+  <head>
+	<meta charset="utf-8" />
+	<title>Javi's Programs - JavaScript</title>
+	<!-- Inicio del código para resaltar la sintaxis de los códigos fuente con la librería SyntaxHighlighter  -->
+	<link type="text/css" rel="stylesheet" href="../librerias/syntaxhighlighter/styles/shCoreDefault.css"/>
+	<script type="text/javascript" src="../librerias/syntaxhighlighter/scripts/shCore.js"></script>
+	<script type="text/javascript" src="../librerias/syntaxhighlighter/scripts/shBrushJScript.js"></script>
+	<script type="text/javascript" src="../librerias/syntaxhighlighter/scripts/shBrushCss.js"></script>
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+	<script type="text/javascript">SyntaxHighlighter.config.strings.expandSource = "expandir código";</script>
+	<!-- Fin del código -->
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	<link rel="icon" type="image/x-icon" href="../favicon.ico" />
+	<link type="text/css" rel="stylesheet" href="ejemplos/reloj.css"/>
+  </head>
+  <body>
+	<header>
+	  <h1>Javi's Programs</h1>
+	  <span class="titulo">Programación de andar por casa</span>
+	</header>
+	<nav>
+	  <ul>
+	    <li><a href="../index.html">Inicio</a></li>
+		<li><a href="visualbasic.html">Visual Basic</a></li>
+		<li><a href="cplus.html">C/C++</a></li>
+		<li><a href="javascript.html">JavaScript</a></li>
+		<li><a href="php.html">PHP</a></li>
+		<li><a href="contacto.html">Contacto</a></li>
+		<li><a href="sobre.html">Sobre nosotros</a></li>
+	  </ul>
+	</nav>
+	<article>
+		<h2>Reloj rotatorio que sigue el cursor del ratón</h2>
+		
+		<p>Efecto en Javascript que muestra un reloj rotando sobre el cursor del ratón con la hora y fecha del sistema. Para implementarlo en su página web siga los siguientes pasos.</p>
+		<p><b>Paso 1:</b> Coloque este código CSS entre &lt;HEAD&gt;&lt;/HEAD&gt; o bien en una hoja de estilo externa.</p>
+		
+<pre class="brush: css;collapse: false;toolbar: false;">
+&lt;style type="text/css"&gt;
+.css1 {
+position: absolute;
+top: 0;
+left: 0;
+width: 16px;
+height: 16px;
+font-family: Arial,sans-serif;
+font-size: 16px;
+text-align: center;
+font-weight: 700;
+}
+
+.css2 {
+position: absolute;
+top: 0;
+left: 0;
+width: 10px;
+height: 10px;
+font-family: Arial,sans-serif;
+font-size: 10px;
+text-align: center;
+text-shadow: 0 0 1px #666;
+}
+&lt;/style&gt;
+ 
+</pre>
+
+	<p><b>Paso 2:</b> Pegue este código al final de la página justo antes de &lt;/BODY&gt;&lt;/HTML&gt; o bien en un archivo JS externo que cargue el script desde la posición mencionada.</p>
+
+<pre class="brush: js;collapse: false;toolbar: false;">
+if (document.getElementById&amp;&amp;!document.layers){
+
+/* Colores */
+dCol='#3ADF00';   // color fecha
+fCol='#0040FF';   // color números
+sCol='#FF8000';   // color segundos
+mCol='#B40404';   // color minutos
+hCol='#B40404';   // color horas
+
+/* Controles */
+del=0.6;  // velocidad de seguimiento del ratón
+ref=35;   // velocidad de retardo
+
+var ieType=(typeof window.innerWidth != 'number');
+var docComp=(document.compatMode);
+var docMod=(docComp &amp;&amp; docComp.indexOf("CSS") != -1);
+var ieRef=(ieType &amp;&amp; docMod)
+?document.documentElement:document.body;
+theDays=new Array("DOMINGO","LUNES","MARTES","MI\u00C9RCOLES","JUEVES","VIERNES","S\u00C1BADO");
+theMonths=new Array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+date=new Date();
+day=date.getDate();
+year=date.getYear();
+if (year &lt; 2000) year=year+1900; 
+tmpdate=" "+theDays[date.getDay()]+" "+day+" "+theMonths[date.getMonth()]+" "+year;
+D=tmpdate.split("");
+N='3 4 5 6 7 8 9 10 11 12 1 2';
+N=N.split(" ");
+F=N.length;
+H='...';
+H=H.split("");
+M='....';
+M=M.split("");
+S='.....';
+S=S.split("");
+siz=40;
+eqf=360/F;
+eqd=360/D.length;
+han=siz/5.5;
+ofy=-7;
+ofx=-3;
+ofst=70;
+tmr=null;
+vis=true;
+mouseY=0;
+mouseX=0;
+dy=new Array();
+dx=new Array();
+zy=new Array();
+zx=new Array();
+tmps=new Array();
+tmpm=new Array(); 
+tmph=new Array();
+tmpf=new Array(); 
+tmpd=new Array();
+var sum=parseInt(D.length+F+H.length+M.length+S.length)+1;
+for (i=0; i &lt; sum; i++){
+dy[i]=0;
+dx[i]=0;
+zy[i]=0;
+zx[i]=0;
+}
+
+algn=new Array();
+for (i=0; i &lt; D.length; i++){
+algn[i]=(parseInt(D[i]) || D[i]==0)?10:9;
+document.write('&lt;div id="_date'+i+'" class="css2" style="font-size:'+algn[i]+'px;color:'+dCol+'"&gt;'+D[i]+'&lt;\/div&gt;');
+tmpd[i]=document.getElementById("_date"+i).style;
+}
+for (i=0; i &lt; F; i++){
+document.write('&lt;div id="_face'+i+'" class="css2" style="color:'+fCol+'"&gt;'+N[i]+'&lt;\/div&gt;');
+tmpf[i]=document.getElementById("_face"+i).style; 
+}
+for (i=0; i &lt; H.length; i++){
+document.write('&lt;div id="_hours'+i+'" class="css1" style="color:'+hCol+'"&gt;'+H[i]+'&lt;\/div&gt;');
+tmph[i]=document.getElementById("_hours"+i).style;
+}
+for (i=0; i &lt; M.length; i++){
+document.write('&lt;div id="_minutes'+i+'" class="css1" style="color:'+mCol+'"&gt;'+M[i]+'&lt;\/div&gt;');
+tmpm[i]=document.getElementById("_minutes"+i).style; 
+}
+for (i=0; i &lt; S.length; i++){
+document.write('&lt;div id="_seconds'+i+'" class="css1" style="color:'+sCol+'"&gt;'+S[i]+'&lt;\/div&gt;');
+tmps[i]=document.getElementById("_seconds"+i).style;         
+}
+
+function onoff(){
+if (vis){ 
+ vis=false;
+ document.getElementById("control").value="Mostrar Efecto";
+ }
+else{ 
+ vis=true;
+ document.getElementById("control").value="Ocultar Efecto";
+ Delay();
+ }
+kill();
+}
+
+function kill(){
+if (vis) 
+ document.onmousemove=mouse;
+else 
+ document.onmousemove=null;
+} 
+
+function mouse(e){
+var msy = (!ieType)?window.pageYOffset:0;
+if (!e) e = window.event;    
+ if (typeof e.pageY == 'number'){
+  mouseY = e.pageY + ofst - msy;
+  mouseX = e.pageX + ofst;
+ }
+ else{
+  mouseY = e.clientY + ofst - msy;
+  mouseX = e.clientX + ofst;
+ }
+if (!vis) kill();
+}
+document.onmousemove=mouse;
+
+function winDims(){
+winH=(ieType)?ieRef.clientHeight:window.innerHeight; 
+winW=(ieType)?ieRef.clientWidth:window.innerWidth;
+}
+winDims();
+window.onresize=new Function("winDims()");
+
+function ClockAndAssign(){
+time = new Date();
+secs = time.getSeconds();
+sec = Math.PI * (secs-15) / 30;
+mins = time.getMinutes();
+min = Math.PI * (mins-15) / 30;
+hrs = time.getHours();
+hr = Math.PI * (hrs-3) / 6 + Math.PI * parseInt(time.getMinutes()) / 360;
+
+for (i=0; i &lt; S.length; i++){
+ tmps[i].top=dy[D.length+F+H.length+M.length+i]+ofy+(i*han)*Math.sin(sec)+scrollY+"px";
+ tmps[i].left=dx[D.length+F+H.length+M.length+i]+ofx+(i*han)*Math.cos(sec)+"px";
+ }
+for (i=0; i &lt; M.length; i++){
+ tmpm[i].top=dy[D.length+F+H.length+i]+ofy+(i*han)*Math.sin(min)+scrollY+"px";
+ tmpm[i].left=dx[D.length+F+H.length+i]+ofx+(i*han)*Math.cos(min)+"px";
+ }
+for (i=0; i &lt; H.length; i++){
+ tmph[i].top=dy[D.length+F+i]+ofy+(i*han)*Math.sin(hr)+scrollY+"px";
+ tmph[i].left=dx[D.length+F+i]+ofx+(i*han)*Math.cos(hr)+"px";
+ }
+for (i=0; i &lt; F; i++){
+ tmpf[i].top=dy[D.length+i]+siz*Math.sin(i*eqf*Math.PI/180)+scrollY+"px";
+ tmpf[i].left=dx[D.length+i]+siz*Math.cos(i*eqf*Math.PI/180)+"px";
+ }
+for (i=0; i &lt; D.length; i++){
+ tmpd[i].top=dy[i]+siz*1.5*Math.sin(-sec+i*eqd*Math.PI/180)+scrollY+"px";
+ tmpd[i].left=dx[i]+siz*1.5*Math.cos(-sec+i*eqd*Math.PI/180)+"px";
+ }
+if (!vis)clearTimeout(tmr);
+}
+
+buffW=(ieType)?80:90;
+function Delay(){
+scrollY=(ieType)?ieRef.scrollTop:window.pageYOffset;
+if (!vis){
+ dy[0]=-100;
+ dx[0]=-100;
+}
+else{
+ zy[0]=Math.round(dy[0]+=((mouseY)-dy[0])*del);
+ zx[0]=Math.round(dx[0]+=((mouseX)-dx[0])*del);
+}
+for (i=1; i &lt; sum; i++){
+ if (!vis){
+  dy[i]=-100;
+  dx[i]=-100;
+ }
+ else{
+  zy[i]=Math.round(dy[i]+=(zy[i-1]-dy[i])*del);
+  zx[i]=Math.round(dx[i]+=(zx[i-1]-dx[i])*del);
+ }
+if (dy[i-1] &gt;= winH-80) dy[i-1]=winH-80;
+if (dx[i-1] &gt;= winW-buffW) dx[i-1]=winW-buffW;
+}
+
+tmr=setTimeout('Delay()',ref);
+ClockAndAssign();
+}
+window.onload=Delay;
+}
+ 
+ 
+ 
+ 
+</pre>
+
+		<p><b>Paso 3 (opcional):</b> Copie y pegue este código donde desee que aparezca un botón para ocultar o mostrar el efecto.</p>
+		
+<script type="text/javascript">
+if (document.getElementById&&!document.layers){
+document.write('<input type="button" id="control" value="Ocultar Efecto" onClick="this.blur();onoff()">');
+}
+</script>		
+
+<pre class="brush: js;collapse: false;toolbar: false;">
+&lt;script type="text/javascript"&gt;
+if (document.getElementById&amp;&amp;!document.layers){
+document.write('&lt;input type="button" id="control" value="Ocultar Reloj" onClick="this.blur();onoff()"&gt;');
+}
+&lt;/script&gt;
+</pre>
+		
+		<p><i><b>Javi</b></i></p>
+		
+	</article>
+	
+	<aside>
+	
+		<div class="widgets">
+			<span class="texto_widget">Buscar entrada</span><br/>
+		</div>
+
+		<div id="formulario_buscar">
+		<form id="widget_buscar" action="javascript:alert('Funcionalidad no implementada.')" method="get" autocomplete="off">
+			<input name="buscar" type="text" value="" required="required" title="Buscar" /><br />
+			<input class="boton_enviar" type="submit" value="Buscar" />
+		</form>
+		</div>
+		
+		<div class="widgets">
+			<span class="texto_widget">Secciones</span><br/>
+			<ul>
+				<li><a href="visualbasic.html">Visual Basic</a></li>
+				<li><a href="cplus.html">C/C++</a></li>
+				<li><a href="javascript.html">JavaScript</a></li>
+				<li><a href="php.html">PHP</a></li>
+			</ul>
+		</div>		
+		
+		<div class="widgets">
+			<span class="texto_widget">Etiquetas</span><br/>
+			<ul>
+				<li><a href="enconstruccion.html">variables</a></li>
+				<li><a href="enconstruccion.html">funciones</a></li>
+				<li><a href="enconstruccion.html">arrays</a></li>
+				<li><a href="enconstruccion.html">prototipos</a></li>
+				<li><a href="enconstruccion.html">operaciones</a></li>
+				<li><a href="enconstruccion.html">punteros</a></li>
+				<li><a href="enconstruccion.html">declaraciones</a></li>
+				<li><a href="enconstruccion.html">matrices</a></li>
+			</ul>
+		</div>
+
+		<div class="widgets">
+			<span class="texto_widget">Nube de etiquetas</span><br/>
+			<div id="nube">
+				<a href="enconstruccion.html">Funciones</a>
+				<a href="enconstruccion.html">Variables</a>
+				<a href="enconstruccion.html">Matrices</a>
+				<a href="enconstruccion.html">Operaciones</a>
+				<a href="enconstruccion.html">Punteros</a>
+				<a href="enconstruccion.html">Prototipos</a>
+				<a href="enconstruccion.html">Declaraciones</a>
+				<a href="enconstruccion.html">Arrays</a>
+			</div>
+		</div>
+		
+		<div class="widgets">
+			<span class="texto_widget">Feeds</span><br/>
+			<ul>
+				<li><a href="enconstruccion.html">Subscribirse (RSS)</a></li>
+				<li><a href="enconstruccion.html">Subscribirse (ATOM)</a></li>
+			</ul>			
+		</div>
+		
+	</aside>
+	<footer><p>Copyright &copy; Javier Ortega 2016</p></footer>
+
+	<script type="text/javascript" src="ejemplos/reloj.js"></script>
+  </body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<!-- Práctica 01 - HTML y CSS.  Javier Ortega Fernández -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+  <head>
+	<meta charset="utf-8" />
+	<title>Javi's Programs - C/C++</title>
+	<!-- Inicio del código para resaltar la sintaxis de los códigos fuente con la librería SyntaxHighlighter  -->
+	<link type="text/css" rel="stylesheet" href="../librerias/syntaxhighlighter/styles/shCoreDefault.css"/>
+	<script type="text/javascript" src="../librerias/syntaxhighlighter/scripts/shCore.js"></script>
+	<script type="text/javascript" src="../librerias/syntaxhighlighter/scripts/shBrushCpp.js"></script>
+	<script type="text/javascript">SyntaxHighlighter.config.strings.expandSource = "expandir código";</script>
+	<script type="text/javascript">SyntaxHighlighter.config.strings.stripBrs = false;</script>
+	<script type="text/javascript">SyntaxHighlighter.defaults['gutter'] = true;</script>
+	<script type="text/javascript">SyntaxHighlighter.all();</script>	
+	<!-- Fin del código -->
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	<link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  </head>
+  <body>
+	<header>
+	  <h1>Javi's Programs</h1>
+	  <span class="titulo">Programación de andar por casa</span>
+	</header>
+	<nav>
+	  <ul>
+	    <li><a href="../index.html">Inicio</a></li>
+		<li><a href="visualbasic.html">Visual Basic</a></li>
+		<li><a href="cplus.html">C/C++</a></li>
+		<li><a href="javascript.html">JavaScript</a></li>
+		<li><a href="php.html">PHP</a></li>
+		<li><a href="contacto.html">Contacto</a></li>
+		<li><a href="sobre.html">Sobre nosotros</a></li>
+	  </ul>
+	</nav>
+	<article>
+		<h2>Generar un hash SHA-256 de una cadena de texto o archivo</h2>
+		<p>El siguiente código fuente es un ejemplo de implementación del algoritmo SHA-256 en C y puede compilarse fácilmente (con Codeblocks por ejemplo) para crear un ejecutable de línea de comandos que genera un hash de un archivo o una cadena de texto. El programa al pasarle como argumento una cadena de texto o la ruta de un archivo <i>(si el archivo se encuentra en el directorio activo es suficiente con el nombre, al pasarle una ruta absoluta hay que agregar comillas dobles, de lo contrario sería interpretado como texto)</i> mostrará por pantalla el hash resultante.</p>
+		
+		<!--
+		<blockquote>
+		<p>C:\Windows\system32>sha256 Hola mundo</p>
+		<p>E633F4FC79BADEA1DC5DB970CF397C8248BAC47CC3ACF9915BA60B5D76B0E88F</p>
+		</blockquote>
+		-->
+		
+		<p>La siguiente imagen muestra algunos ejemplos de uso, el primero genera el hash de la cadena de texto <i>Hola mundo</i>, en el segundo se obtiene el hash del archivo <i>MSDOS.SYS</i> que se encuentra en el directorio activo, y en el tercero se le pasa como argumento la ruta absoluta del archivo <i>vlc.exe</i>. </p>
+		<img src="../images/ejemplo1.png" alt="Consola de Windows" />		
+		
+		<p>El código fuente consta de tres archivos: main.c, sha256.c y sha256.h</p>
+
+<p><b>main.c</b></p>
+<pre class="brush: cpp;collapse: false;toolbar: false;">
+/**********************************************************
+* Archivo:		main.c
+* Autor:		Javier Ortega
+* Licencia:		Creative Commons
+**********************************************************/
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include "sha256.h"
+
+void SHAstring(char*, char[]);
+void SHAfile(FILE*, char[]);
+
+// Función principal del programa
+int main(int argc, char *argv[])
+{
+	FILE *fp;
+	char sha256[64];
+
+	if (argc &lt; 2) {
+		printf("uso: sha256 { cadena | archivo }\n");
+		return 0;
+	}	
+	if ((fp=fopen(argv[1],"rb")) == NULL ) {
+		SHAstring(argv[1], sha256);
+		printf("%s\n", sha256);
+	} else {
+		SHAfile(fp, sha256);
+		printf("%s\n", sha256);
+		fclose(fp);
+	}
+    return 0;
+}
+
+// Función para generar el hash de una cadena de texto
+void SHAstring(char *cadena, char str[])
+{
+	SHA256_CTX ctx_sha;
+	unsigned char buff[33];
+	unsigned char hash[32];
+	unsigned int n;
+	int i;
+	char ch;
+	n = strlen(cadena);
+
+	for (i=0; i&lt;n; i++) {
+        ch = *cadena++;
+        buff[i] = ch;
+	}
+	buff[33 - 1] = '\0';
+
+	sha256_init(&amp;ctx_sha);
+	sha256_update(&amp;ctx_sha,buff,n);
+	sha256_final(&amp;ctx_sha,hash);
+
+	for (i=0; i &lt; 32; i++) {
+		sprintf(str+i*2, "%02X", hash[i]);
+	}
+}
+
+// Función para generar el hash de un archivo
+void SHAfile(FILE *fp, char str2[])
+{
+	SHA256_CTX ctx_sha;
+	unsigned char buf2[32];
+	unsigned char hash2[32];
+	unsigned long n;
+	int i;
+
+	sha256_init(&amp;ctx_sha);
+	while ((n = fread(buf2, 1, sizeof(buf2), fp)) &gt; 0)
+		sha256_update(&amp;ctx_sha,buf2,n);
+	sha256_final(&amp;ctx_sha,hash2);
+
+	for (i=0; i &lt; 32; i++) {
+		sprintf(str2+i*2, "%02X", hash2[i]);
+	}
+}
+ 
+ 
+</pre>
+
+<p><b>sha256.c</b></p>
+<pre class="brush: cpp;collapse: false;toolbar: false;">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+#define uchar unsigned char // 8-bit byte
+#define uint unsigned int // 32-bit word
+
+// DBL_INT_ADD treats two unsigned ints a and b as one 64-bit integer and adds c to it
+#define DBL_INT_ADD(a,b,c) if (a &gt; 0xffffffff - (c)) ++b; a += c;
+#define ROTLEFT(a,b) (((a) &lt;&lt; (b)) | ((a) &gt;&gt; (32-(b))))
+#define ROTRIGHT(a,b) (((a) &gt;&gt; (b)) | ((a) &lt;&lt; (32-(b))))
+
+#define CH(x,y,z) (((x) &amp; (y)) ^ (~(x) &amp; (z)))
+#define MAJ(x,y,z) (((x) &amp; (y)) ^ ((x) &amp; (z)) ^ ((y) &amp; (z)))
+#define EP0(x) (ROTRIGHT(x,2) ^ ROTRIGHT(x,13) ^ ROTRIGHT(x,22))
+#define EP1(x) (ROTRIGHT(x,6) ^ ROTRIGHT(x,11) ^ ROTRIGHT(x,25))
+#define SIG0(x) (ROTRIGHT(x,7) ^ ROTRIGHT(x,18) ^ ((x) &gt;&gt; 3))
+#define SIG1(x) (ROTRIGHT(x,17) ^ ROTRIGHT(x,19) ^ ((x) &gt;&gt; 10))
+
+typedef struct {
+   uchar data[64];
+   uint datalen;
+   uint bitlen[2];
+   uint state[8];
+} SHA256_CTX;
+
+uint k[64] = {
+   0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+   0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+   0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+   0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+   0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+   0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+   0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+   0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+};
+
+
+void sha256_transform(SHA256_CTX *ctx, uchar data[])
+{
+   uint a,b,c,d,e,f,g,h,i,j,t1,t2,m[64];
+
+   for (i=0,j=0; i &lt; 16; ++i, j += 4)
+      m[i] = (data[j] &lt;&lt; 24) | (data[j+1] &lt;&lt; 16) | (data[j+2] &lt;&lt; 8) | (data[j+3]);
+   for ( ; i &lt; 64; ++i)
+      m[i] = SIG1(m[i-2]) + m[i-7] + SIG0(m[i-15]) + m[i-16];
+
+   a = ctx-&gt;state[0];
+   b = ctx-&gt;state[1];
+   c = ctx-&gt;state[2];
+   d = ctx-&gt;state[3];
+   e = ctx-&gt;state[4];
+   f = ctx-&gt;state[5];
+   g = ctx-&gt;state[6];
+   h = ctx-&gt;state[7];
+
+   for (i = 0; i &lt; 64; ++i) {
+      t1 = h + EP1(e) + CH(e,f,g) + k[i] + m[i];
+      t2 = EP0(a) + MAJ(a,b,c);
+      h = g;
+      g = f;
+      f = e;
+      e = d + t1;
+      d = c;
+      c = b;
+      b = a;
+      a = t1 + t2;
+   }
+
+   ctx-&gt;state[0] += a;
+   ctx-&gt;state[1] += b;
+   ctx-&gt;state[2] += c;
+   ctx-&gt;state[3] += d;
+   ctx-&gt;state[4] += e;
+   ctx-&gt;state[5] += f;
+   ctx-&gt;state[6] += g;
+   ctx-&gt;state[7] += h;
+}
+
+void sha256_init(SHA256_CTX *ctx)
+{
+   ctx-&gt;datalen = 0;
+   ctx-&gt;bitlen[0] = 0;
+   ctx-&gt;bitlen[1] = 0;
+   ctx-&gt;state[0] = 0x6a09e667;
+   ctx-&gt;state[1] = 0xbb67ae85;
+   ctx-&gt;state[2] = 0x3c6ef372;
+   ctx-&gt;state[3] = 0xa54ff53a;
+   ctx-&gt;state[4] = 0x510e527f;
+   ctx-&gt;state[5] = 0x9b05688c;
+   ctx-&gt;state[6] = 0x1f83d9ab;
+   ctx-&gt;state[7] = 0x5be0cd19;
+}
+
+void sha256_update(SHA256_CTX *ctx, uchar data[], uint len)
+{
+   //uint t,i;
+	uint i;
+
+   for (i=0; i &lt; len; ++i) {
+      ctx-&gt;data[ctx-&gt;datalen] = data[i];
+      ctx-&gt;datalen++;
+      if (ctx-&gt;datalen == 64) {
+         sha256_transform(ctx,ctx-&gt;data);
+         DBL_INT_ADD(ctx-&gt;bitlen[0],ctx-&gt;bitlen[1],512);
+         ctx-&gt;datalen = 0;
+      }
+   }
+}
+
+void sha256_final(SHA256_CTX *ctx, uchar hash[])
+{
+   uint i;
+
+   i = ctx-&gt;datalen;
+
+   // Pad whatever data is left in the buffer.
+   if (ctx-&gt;datalen &lt; 56) {
+      ctx-&gt;data[i++] = 0x80;
+      while (i &lt; 56)
+         ctx-&gt;data[i++] = 0x00;
+   }
+   else {
+      ctx-&gt;data[i++] = 0x80;
+      while (i &lt; 64)
+         ctx-&gt;data[i++] = 0x00;
+      sha256_transform(ctx,ctx-&gt;data);
+      memset(ctx-&gt;data,0,56);
+   }
+
+   // Append to the padding the total message's length in bits and transform.
+   DBL_INT_ADD(ctx-&gt;bitlen[0],ctx-&gt;bitlen[1],ctx-&gt;datalen * 8);
+   ctx-&gt;data[63] = ctx-&gt;bitlen[0];
+   ctx-&gt;data[62] = ctx-&gt;bitlen[0] &gt;&gt; 8;
+   ctx-&gt;data[61] = ctx-&gt;bitlen[0] &gt;&gt; 16;
+   ctx-&gt;data[60] = ctx-&gt;bitlen[0] &gt;&gt; 24;
+   ctx-&gt;data[59] = ctx-&gt;bitlen[1];
+   ctx-&gt;data[58] = ctx-&gt;bitlen[1] &gt;&gt; 8;
+   ctx-&gt;data[57] = ctx-&gt;bitlen[1] &gt;&gt; 16;
+   ctx-&gt;data[56] = ctx-&gt;bitlen[1] &gt;&gt; 24;
+   sha256_transform(ctx,ctx-&gt;data);
+
+   // Since this implementation uses little endian byte ordering and SHA uses big endian,
+   // reverse all the bytes when copying the final state to the output hash.
+   for (i=0; i &lt; 4; ++i) {
+      hash[i]    = (ctx-&gt;state[0] &gt;&gt; (24-i*8)) &amp; 0x000000ff;
+      hash[i+4]  = (ctx-&gt;state[1] &gt;&gt; (24-i*8)) &amp; 0x000000ff;
+      hash[i+8]  = (ctx-&gt;state[2] &gt;&gt; (24-i*8)) &amp; 0x000000ff;
+      hash[i+12] = (ctx-&gt;state[3] &gt;&gt; (24-i*8)) &amp; 0x000000ff;
+      hash[i+16] = (ctx-&gt;state[4] &gt;&gt; (24-i*8)) &amp; 0x000000ff;
+      hash[i+20] = (ctx-&gt;state[5] &gt;&gt; (24-i*8)) &amp; 0x000000ff;
+      hash[i+24] = (ctx-&gt;state[6] &gt;&gt; (24-i*8)) &amp; 0x000000ff;
+      hash[i+28] = (ctx-&gt;state[7] &gt;&gt; (24-i*8)) &amp; 0x000000ff;
+   }
+}
+ 
+</pre>
+
+<p><b>sha256.h</b></p>
+<pre class="brush: cpp;collapse: false;toolbar: false;">
+/*********************************************************************
+* Filename:   sha256.h
+* Author:     Brad Conte (brad AT bradconte.com)
+* Copyright:
+* Disclaimer: This code is presented "as is" without any guarantees.
+* Details:    Defines the API for the corresponding SHA1 implementation.
+*********************************************************************/
+
+#ifndef SHA256_H
+#define SHA256_H
+
+/*************************** HEADER FILES ***************************/
+#include &lt;stddef.h&gt;
+
+/****************************** MACROS ******************************/
+#define SHA256_BLOCK_SIZE 32            // SHA256 outputs a 32 byte digest
+
+/**************************** DATA TYPES ****************************/
+typedef unsigned char BYTE;             // 8-bit byte
+typedef unsigned int  WORD;             // 32-bit word, change to "long" for 16-bit machines
+
+typedef struct {
+	BYTE data[64];
+	WORD datalen;
+	__int64 bitlen;
+	WORD state[8];
+} SHA256_CTX;
+
+/*********************** FUNCTION DECLARATIONS **********************/
+void sha256_init(SHA256_CTX *ctx);
+void sha256_update(SHA256_CTX *ctx, const BYTE data[], size_t len);
+void sha256_final(SHA256_CTX *ctx, BYTE hash[]);
+
+#endif   // SHA256_H
+ 
+</pre>
+
+	<p>Una opción interesante sería compilar el ejecutable como 'sha256.exe' y colocar el archivo en la carpeta Windows para que pueda ser ejecutado mediante la consola desde cualquier directorio.</p>
+	
+	<p><i><b>Javi</b></i></p>
+
+	</article>
+	
+	<aside>
+	
+		<div class="widgets">
+			<span class="texto_widget">Buscar entrada</span><br/>
+		</div>
+
+		<div id="formulario_buscar">
+		<form id="widget_buscar" action="javascript:alert('Funcionalidad no implementada.')" method="get" autocomplete="off">
+			<input name="buscar" type="text" value="" required="required" title="Buscar" /><br />
+			<input class="boton_enviar" type="submit" value="Buscar" />
+		</form>
+		</div>
+		
+		<div class="widgets">
+			<span class="texto_widget">Secciones</span><br/>
+			<ul>
+				<li><a href="visualbasic.html">Visual Basic</a></li>
+				<li><a href="cplus.html">C/C++</a></li>
+				<li><a href="javascript.html">JavaScript</a></li>
+				<li><a href="php.html">PHP</a></li>
+			</ul>
+		</div>		
+		
+		<div class="widgets">
+			<span class="texto_widget">Etiquetas</span><br/>
+			<ul>
+				<li><a href="enconstruccion.html">variables</a></li>
+				<li><a href="enconstruccion.html">funciones</a></li>
+				<li><a href="enconstruccion.html">arrays</a></li>
+				<li><a href="enconstruccion.html">prototipos</a></li>
+				<li><a href="enconstruccion.html">operaciones</a></li>
+				<li><a href="enconstruccion.html">punteros</a></li>
+				<li><a href="enconstruccion.html">declaraciones</a></li>
+				<li><a href="enconstruccion.html">matrices</a></li>
+			</ul>
+		</div>
+
+		<div class="widgets">
+			<span class="texto_widget">Nube de etiquetas</span><br/>
+			<div id="nube">
+				<a href="enconstruccion.html">Funciones</a>
+				<a href="enconstruccion.html">Variables</a>
+				<a href="enconstruccion.html">Matrices</a>
+				<a href="enconstruccion.html">Operaciones</a>
+				<a href="enconstruccion.html">Punteros</a>
+				<a href="enconstruccion.html">Prototipos</a>
+				<a href="enconstruccion.html">Declaraciones</a>
+				<a href="enconstruccion.html">Arrays</a>
+			</div>
+		</div>
+		
+		<div class="widgets">
+			<span class="texto_widget">Feeds</span><br/>
+			<ul>
+				<li><a href="enconstruccion.html">Subscribirse (RSS)</a></li>
+				<li><a href="enconstruccion.html">Subscribirse (ATOM)</a></li>
+			</ul>			
+		</div>
+		
+	</aside>
+	<footer><p>Copyright &copy; Javier Ortega 2016</p></footer>
+	
+  </body>
+</html>

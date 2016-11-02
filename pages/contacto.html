@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!-- Práctica 01 - HTML y CSS.  Javier Ortega Fernández -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+  <head>
+	<meta charset="utf-8" />
+	<title>Javi's Programs - Contacto</title>
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	<link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  </head>
+  <body>
+	<header>
+	  <h1>Javi's Programs</h1>
+	  <span class="titulo">Programación de andar por casa</span>
+	</header>
+	<nav>
+	  <ul>
+	    <li><a href="../index.html">Inicio</a></li>
+		<li><a href="visualbasic.html">Visual Basic</a></li>
+		<li><a href="cplus.html">C/C++</a></li>
+		<li><a href="javascript.html">JavaScript</a></li>
+		<li><a href="php.html">PHP</a></li>
+		<li><a href="contacto.html">Contacto</a></li>
+		<li><a href="sobre.html">Sobre nosotros</a></li>
+	  </ul>
+	</nav>
+	<section>
+	<h2>Contacto</h2>
+	<p>Si desea contactar conmigo, rellene los campos del formulario para enviarme un mensaje y le responderé con la mayor brevedad posible.</p><br />
+	<form id="contacto" action="javascript:alert('Funcionalidad no implementada.')" method="post" autocomplete="off">
+
+		<label for="fnombre">Nombre (obligatorio) <span class="requerido">*</span></label><br />
+		<input id="fnombre" name="nombre" type="text" value="" required="required" title="Nombre" /><br />
+
+		<label for="femail">Correo electrónico (obligatorio) <span class="requerido">*</span></label><br />
+		<input id="femail" name="email" type="text" value="" required="required" title="Correo electrónico" /><br />
+
+		<label for="fweb">Sitio web</label><br />
+		<input id="fweb" name="web" type="text" value="" /><br /><br />
+
+		<label for="fmensaje">Escribe tu mensaje: </label><br />
+		<textarea  id="fmensaje" name="mensaje" rows="7" cols="81"></textarea><br />
+
+		<input class="boton_enviar" type="submit" value="ENVIAR" />
+	</form>	
+	</section>
+	
+	<aside>
+	
+		<div class="widgets">
+			<span class="texto_widget">Buscar entrada</span><br/>
+		</div>
+
+		<div id="formulario_buscar">
+		<form id="widget_buscar" action="javascript:alert('Funcionalidad no implementada.')" method="get" autocomplete="off">
+			<input name="buscar" type="text" value="" required="required" title="Buscar" /><br />
+			<input class="boton_enviar" type="submit" value="Buscar" />
+		</form>
+		</div>
+		
+		<div class="widgets">
+			<span class="texto_widget">Secciones</span><br/>
+			<ul>
+				<li><a href="visualbasic.html">Visual Basic</a></li>
+				<li><a href="cplus.html">C/C++</a></li>
+				<li><a href="javascript.html">JavaScript</a></li>
+				<li><a href="php.html">PHP</a></li>
+			</ul>
+		</div>		
+		
+		<div class="widgets">
+			<span class="texto_widget">Etiquetas</span><br/>
+			<ul>
+				<li><a href="enconstruccion.html">variables</a></li>
+				<li><a href="enconstruccion.html">funciones</a></li>
+				<li><a href="enconstruccion.html">arrays</a></li>
+				<li><a href="enconstruccion.html">prototipos</a></li>
+				<li><a href="enconstruccion.html">operaciones</a></li>
+				<li><a href="enconstruccion.html">punteros</a></li>
+				<li><a href="enconstruccion.html">declaraciones</a></li>
+				<li><a href="enconstruccion.html">matrices</a></li>
+			</ul>
+		</div>
+
+		<div class="widgets">
+			<span class="texto_widget">Nube de etiquetas</span><br/>
+			<div id="nube">
+				<a href="enconstruccion.html">Funciones</a>
+				<a href="enconstruccion.html">Variables</a>
+				<a href="enconstruccion.html">Matrices</a>
+				<a href="enconstruccion.html">Operaciones</a>
+				<a href="enconstruccion.html">Punteros</a>
+				<a href="enconstruccion.html">Prototipos</a>
+				<a href="enconstruccion.html">Declaraciones</a>
+				<a href="enconstruccion.html">Arrays</a>
+			</div>
+		</div>
+		
+		<div class="widgets">
+			<span class="texto_widget">Feeds</span><br/>
+			<ul>
+				<li><a href="enconstruccion.html">Subscribirse (RSS)</a></li>
+				<li><a href="enconstruccion.html">Subscribirse (ATOM)</a></li>
+			</ul>			
+		</div>
+		
+	</aside>
+	<footer><p>Copyright &copy; Javier Ortega 2016</p></footer>
+	
+  </body>
+</html>

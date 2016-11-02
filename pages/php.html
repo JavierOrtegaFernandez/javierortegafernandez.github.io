@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<!-- Práctica 01 - HTML y CSS.  Javier Ortega Fernández -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+  <head>
+	<meta charset="utf-8" />
+	<title>Javi's Programs - PHP</title>
+	<!-- Inicio del código para resaltar la sintaxis de los códigos fuente con la librería SyntaxHighlighter  -->
+	<link type="text/css" rel="stylesheet" href="../librerias/syntaxhighlighter/styles/shCoreDefault.css"/>
+	<script type="text/javascript" src="../librerias/syntaxhighlighter/scripts/shCore.js"></script>
+	<script type="text/javascript" src="../librerias/syntaxhighlighter/scripts/shBrushPhp.js"></script>
+	<script type="text/javascript" src="../librerias/syntaxhighlighter/scripts/shBrushXml.js"></script>
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+	<script type="text/javascript">SyntaxHighlighter.config.strings.expandSource = "expandir código";</script>
+	<!-- Fin del código -->
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	<link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  </head>
+  <body>
+	<header>
+	  <h1>Javi's Programs</h1>
+	  <span class="titulo">Programación de andar por casa</span>
+	</header>
+	<nav>
+	  <ul>
+	    <li><a href="../index.html">Inicio</a></li>
+		<li><a href="visualbasic.html">Visual Basic</a></li>
+		<li><a href="cplus.html">C/C++</a></li>
+		<li><a href="javascript.html">JavaScript</a></li>
+		<li><a href="php.html">PHP</a></li>
+		<li><a href="contacto.html">Contacto</a></li>
+		<li><a href="sobre.html">Sobre nosotros</a></li>
+	  </ul>
+	</nav>
+	<article>
+		<h2>Subir un archivo al servidor mediante PHP</h2>
+		
+		<p>Para permitir que los visitantes de nuestro sitio web puedan subir archivos al servidor mediante php, se puede utilizar el código de este ejemplo, es bastante básico y rudimentario, pero puede cumplir perfectamente nuestro propósito, estableciendo los tipos de archivos admitidos <i>(en este ejemplo solo se aceptan archivos de imagen)</i> y el tamaño máximo <i>(establecido en 3MB).</i></p>
+		<p>Se puede implementar en cualquier página que tengamos <i>(con extensión .php)</i> alojada en un servidor que esté ejecutando PHP, de lo contrario no funcionaría. Hoy día cualquier hosting gratuito ofrece este servicio, pero hay que tener en cuenta que cada hosting tiene definido un tamaño máximo de subida, por lo que antes de establecer el tamaño del archivo debemos conocer el tamaño máximo que nos ofrece el hosting, dicho valor puede comprobarse 'descomentando' la línea <i>//echo $max_upload;</i> eliminando las dos barras y cargando la página para ver el límite asignado, luego volvemos a agregar nuevamente las dos barras.</p>
+		
+<p><b>subir.php</b></p>		
+<pre class="brush: php;collapse: false;toolbar: false;html-script: true;">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+	&lt;meta charset="utf-8" /&gt;
+	&lt;title&gt;Subir archivo mediante PHP&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+	&lt;form action="" method="post" enctype="multipart/form-data"&gt;
+      &lt;label for="archivo"&gt;Seleccione un archivo:&lt;/label&gt;
+	  &lt;input type="file" name="archivo" /&gt;&lt;br/&gt;
+      &lt;input type="submit" name="boton" value="Subir" /&gt;
+	&lt;/form&gt;
+&lt;?php
+
+$max_upload = ini_get('upload_max_filesize');
+//echo $max_upload;
+
+if(isset($_POST['boton'])) {
+ 
+if( !isset($_FILES['archivo']) ) {
+  echo 'Ha habido un error, tienes que elegir un archivo&lt;br/&gt;';
+  echo '&lt;a href="subir.php"&gt;Subir archivo&lt;/a&gt;';
+} else {
+ 
+  $nombre = $_FILES['archivo']['name'];
+  $nombre_tmp = $_FILES['archivo']['tmp_name'];
+  $tipo = $_FILES['archivo']['type'];
+  $tamano = $_FILES['archivo']['size'];
+ 
+  $ext_permitidas = array('pjpeg','jpg','jpeg','gif','png','bmp');	// Extensiones permitidas
+  $partes_nombre = explode('.', $nombre);
+  $extension = end( $partes_nombre );
+  $extension = strtolower($extension);
+  $ext_correcta = in_array($extension, $ext_permitidas);
+ 
+  $tipo_correcto = preg_match('/^image\/(pjpeg|jpeg|gif|png|bmp)$/', $tipo);
+ 
+  $limite = 1048576 * 3;	// Límite tamaño archivo: 1048576 * 3 = 3MB, 1048576 * 4 = 4MB, etc...
+  
+  if( $ext_correcta &amp;&amp; $tipo_correcto &amp;&amp; $tamano &lt;= $limite ) {
+    if( $_FILES['archivo']['error'] &gt; 0 ){
+      echo 'Error: ' . $_FILES['archivo']['error'] . '&lt;br/&gt;';
+    } else {
+      if( file_exists( 'subidas/'.$nombre) ){
+        echo '&lt;br/&gt;El archivo ya existe: ' . $nombre;
+      } else {
+        move_uploaded_file($nombre_tmp, "subidas/" . $nombre);
+		$ruta_script = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+		$ruta_archivo = dirname($ruta_script) . '/subidas/' . $nombre;
+		echo 'Enlace del archivo: ';
+		echo "&lt;a href='" . $ruta_archivo . "'&gt;" . $ruta_archivo . "&lt;/a&gt;";
+      }
+    }
+  } else {
+	if ($tamano == 0 || $nombre == '') {
+		echo 'Seleccione un archivo';
+	} else {
+		echo 'Archivo no permitido';
+	}
+  }
+}
+}
+?&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+ 
+ 
+</pre>
+		<p><i><b>Javi</b></i></p>
+	</article>
+	
+	<aside>
+	
+		<div class="widgets">
+			<span class="texto_widget">Buscar entrada</span><br/>
+		</div>
+
+		<div id="formulario_buscar">
+		<form id="widget_buscar" action="javascript:alert('Funcionalidad no implementada.')" method="get" autocomplete="off">
+			<input name="buscar" type="text" value="" required="required" title="Buscar" /><br />
+			<input class="boton_enviar" type="submit" value="Buscar" />
+		</form>
+		</div>
+		
+		<div class="widgets">
+			<span class="texto_widget">Secciones</span><br/>
+			<ul>
+				<li><a href="visualbasic.html">Visual Basic</a></li>
+				<li><a href="cplus.html">C/C++</a></li>
+				<li><a href="javascript.html">JavaScript</a></li>
+				<li><a href="php.html">PHP</a></li>
+			</ul>
+		</div>		
+		
+		<div class="widgets">
+			<span class="texto_widget">Etiquetas</span><br/>
+			<ul>
+				<li><a href="enconstruccion.html">variables</a></li>
+				<li><a href="enconstruccion.html">funciones</a></li>
+				<li><a href="enconstruccion.html">arrays</a></li>
+				<li><a href="enconstruccion.html">prototipos</a></li>
+				<li><a href="enconstruccion.html">operaciones</a></li>
+				<li><a href="enconstruccion.html">punteros</a></li>
+				<li><a href="enconstruccion.html">declaraciones</a></li>
+				<li><a href="enconstruccion.html">matrices</a></li>
+			</ul>
+		</div>
+
+		<div class="widgets">
+			<span class="texto_widget">Nube de etiquetas</span><br/>
+			<div id="nube">
+				<a href="enconstruccion.html">Funciones</a>
+				<a href="enconstruccion.html">Variables</a>
+				<a href="enconstruccion.html">Matrices</a>
+				<a href="enconstruccion.html">Operaciones</a>
+				<a href="enconstruccion.html">Punteros</a>
+				<a href="enconstruccion.html">Prototipos</a>
+				<a href="enconstruccion.html">Declaraciones</a>
+				<a href="enconstruccion.html">Arrays</a>
+			</div>
+		</div>
+		
+		<div class="widgets">
+			<span class="texto_widget">Feeds</span><br/>
+			<ul>
+				<li><a href="enconstruccion.html">Subscribirse (RSS)</a></li>
+				<li><a href="enconstruccion.html">Subscribirse (ATOM)</a></li>
+			</ul>			
+		</div>
+		
+	</aside>
+	<footer><p>Copyright &copy; Javier Ortega 2016</p></footer>
+	
+  </body>
+</html>

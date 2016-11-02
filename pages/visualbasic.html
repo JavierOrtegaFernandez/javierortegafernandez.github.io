@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<!-- Práctica 01 - HTML y CSS.  Javier Ortega Fernández -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+  <head>
+	<meta charset="utf-8" />
+	<title>Javi's Programs - Visual Basic</title>
+	<!-- Inicio del código para resaltar la sintaxis de los códigos fuente con la librería SyntaxHighlighter  -->
+	<link type="text/css" rel="stylesheet" href="../librerias/syntaxhighlighter/styles/shCoreDefault.css"/>
+	<script type="text/javascript" src="../librerias/syntaxhighlighter/scripts/shCore.js"></script>
+	<script type="text/javascript" src="../librerias/syntaxhighlighter/scripts/shBrushVb.js"></script>
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+	<script type="text/javascript">SyntaxHighlighter.config.strings.expandSource = "expandir código";</script>
+	<!-- Fin del código -->
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	<link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  </head>
+  <body>
+	<header>
+	  <h1>Javi's Programs</h1>
+	  <span class="titulo">Programación de andar por casa</span>
+	</header>
+	<nav>
+	  <ul>
+	    <li><a href="../index.html">Inicio</a></li>
+		<li><a href="visualbasic.html">Visual Basic</a></li>
+		<li><a href="cplus.html">C/C++</a></li>
+		<li><a href="javascript.html">JavaScript</a></li>
+		<li><a href="php.html">PHP</a></li>
+		<li><a href="contacto.html">Contacto</a></li>
+		<li><a href="sobre.html">Sobre nosotros</a></li>
+	  </ul>
+	</nav>
+	<article>
+		<h2>Mostrar la ruta absoluta de los programas en ejecución</h2>
+		
+		<img src="../images/ruta_procesos.png" alt="Imagen del programa" />
+		
+		<p>Un ejemplo sencillo de un pequeño programa escrito en Visual Basic para listar y mostrar la ruta de los procesos. Para compilarlo, abra VB6 y cree un Nuevo proyecto de EXE estándar, agregue al formulario un CommandButton y un ListBox <i>(dejar los nombres de los controles por defecto: Command1 y List1)</i>. Agregue el código fuente en el formulario <i>Form1.frm</i> en el visor de código, guarde el proyecto y genere el archivo Proyecto1.exe desde la pestaña Archivo y et voilà!!, rápido, fácil y para toda la famila :D </p>
+		
+<p><b>Form1.frm</b></p>		
+<pre class="brush: vb;collapse: false;toolbar: false;">
+Option Explicit
+
+'PROGRAMA PARA MOSTRAR LA RUTA ABSOLUTA DE LOS PROCESOS
+'Archivo:	  Form1.frm
+'Autor:		  Javier Ortega
+'Licencia:	  Creative Commons
+
+'Declaraciones
+Private Const TH32CS_SNAPPROCESS = &amp;H2
+Private Const PROCESS_QUERY_INFORMATION As Long = (&amp;H400)
+Private Const PROCESS_VM_READ As Long = (&amp;H10)
+Private Const MAX_PATH As Integer = &amp;H104
+
+Private Type PROCESSENTRY32
+    dwSize As Long
+    cntUsage As Long
+    th32ProcessID As Long
+    th32DefaultHeapID As Long
+    th32ModuleID As Long
+    cntThreads As Long
+    th32ParentProcessID As Long
+    pcPriClassBase As Long
+    dwFlags As Long
+    szExeFile As String * MAX_PATH
+End Type
+
+Private Declare Function CreateToolhelp32Snapshot Lib "Kernel32" ( _
+    ByVal lFlags As Long, _
+    ByVal lProcessID As Long _
+    ) As Long
+     
+Private Declare Function Process32First Lib "Kernel32" ( _
+    ByVal hSnapShot As Long, _
+    uProcess As PROCESSENTRY32 _
+    ) As Long
+     
+Private Declare Function Process32Next Lib "Kernel32" ( _
+    ByVal hSnapShot As Long, _
+    uProcess As PROCESSENTRY32 _
+    ) As Long
+
+Private Declare Function OpenProcess Lib "kernel32.dll" ( _
+     ByVal dwDesiredAccess As Long, _
+     ByVal bInheritHandle As Boolean, _
+     ByVal dwProcessId As Long _
+     ) As Long
+
+Private Declare Function EnumProcessModules Lib "psapi.dll" ( _
+     ByVal hProcess As Long, _
+     ByRef lphModule As Long, _
+     ByVal cb As Long, _
+     ByRef lpcbNeeded As Long) As Long
+
+Private Declare Function GetModuleFileNameEx Lib "psapi.dll" Alias "GetModuleFileNameExA" ( _
+     ByVal hProcess As Long, _
+     ByVal hModule As Long, _
+     ByVal lpFileName As String, _
+     ByVal nSize As Long) As Long
+
+Private Declare Sub CloseHandle Lib "Kernel32" ( _
+    ByVal hPass As Long _
+    )
+
+'Botón
+Private Sub Command1_Click()
+    Call ListaProcesos
+End Sub
+
+'Formulario principal
+Private Sub Form_Load()
+    Form1.Caption = "Procesos"
+    Command1.Caption = "Actualizar"
+    Call ListaProcesos
+End Sub
+
+'Redimensionar controles
+Private Sub Form_Resize()
+    If WindowState = vbMinimized Then Exit Sub
+    List1.Move 120, 120, Me.ScaleWidth - 240, Me.ScaleHeight - 800
+    Command1.Move Me.ScaleWidth - Command1.Width - 120, List1.Height + 220
+End Sub
+
+'Función para listar los procesos
+Private Sub ListaProcesos()
+    Dim PE As PROCESSENTRY32
+    Dim hSnap As Long
+    Dim Result As Boolean
+    Dim hProcess As Long
+    Dim FileName As String * MAX_PATH
+    
+    PE.dwSize = Len(PE)
+    List1.Clear
+    hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)
+    Result = Process32First(hSnap, PE)
+    Do While Result
+            hProcess = OpenProcess(PROCESS_QUERY_INFORMATION Or PROCESS_VM_READ, False, PE.th32ProcessID)
+            If Not EnumProcessModules(hProcess, 0, 0, 0) = 0 Then
+                GetModuleFileNameEx hProcess, 0, FileName, MAX_PATH
+                List1.AddItem FileName
+            End If
+            CloseHandle hProcess
+        Result = Process32Next(hSnap, PE)
+    Loop
+    CloseHandle hSnap
+End Sub
+ 
+ 
+ 
+ 
+</pre>
+	
+	<p><i><b>Javi</b></i></p>
+	
+	</article>
+	
+	<aside>
+	
+		<div class="widgets">
+			<span class="texto_widget">Buscar entrada</span><br/>
+		</div>
+
+		<div id="formulario_buscar">
+		<form id="widget_buscar" action="javascript:alert('Funcionalidad no implementada.')" method="get" autocomplete="off">
+			<input name="buscar" type="text" value="" required="required" title="Buscar" /><br />
+			<input class="boton_enviar" type="submit" value="Buscar" />
+		</form>
+		</div>
+		
+		<div class="widgets">
+			<span class="texto_widget">Secciones</span><br/>
+			<ul>
+				<li><a href="visualbasic.html">Visual Basic</a></li>
+				<li><a href="cplus.html">C/C++</a></li>
+				<li><a href="javascript.html">JavaScript</a></li>
+				<li><a href="php.html">PHP</a></li>
+			</ul>
+		</div>		
+		
+		<div class="widgets">
+			<span class="texto_widget">Etiquetas</span><br/>
+			<ul>
+				<li><a href="enconstruccion.html">variables</a></li>
+				<li><a href="enconstruccion.html">funciones</a></li>
+				<li><a href="enconstruccion.html">arrays</a></li>
+				<li><a href="enconstruccion.html">prototipos</a></li>
+				<li><a href="enconstruccion.html">operaciones</a></li>
+				<li><a href="enconstruccion.html">punteros</a></li>
+				<li><a href="enconstruccion.html">declaraciones</a></li>
+				<li><a href="enconstruccion.html">matrices</a></li>
+			</ul>
+		</div>
+
+		<div class="widgets">
+			<span class="texto_widget">Nube de etiquetas</span><br/>
+			<div id="nube">
+				<a href="enconstruccion.html">Funciones</a>
+				<a href="enconstruccion.html">Variables</a>
+				<a href="enconstruccion.html">Matrices</a>
+				<a href="enconstruccion.html">Operaciones</a>
+				<a href="enconstruccion.html">Punteros</a>
+				<a href="enconstruccion.html">Prototipos</a>
+				<a href="enconstruccion.html">Declaraciones</a>
+				<a href="enconstruccion.html">Arrays</a>
+			</div>
+		</div>
+		
+		<div class="widgets">
+			<span class="texto_widget">Feeds</span><br/>
+			<ul>
+				<li><a href="enconstruccion.html">Subscribirse (RSS)</a></li>
+				<li><a href="enconstruccion.html">Subscribirse (ATOM)</a></li>
+			</ul>			
+		</div>
+		
+	</aside>
+	<footer><p>Copyright &copy; Javier Ortega 2016</p></footer>
+	
+  </body>
+</html>
